@@ -1,6 +1,6 @@
 {
   "name": "@daeinc/keyframes",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Keyframes ported to TypeScript",
   "type": "module",
   "main": "./dist/index.js",
