@@ -1,4 +1,4 @@
-import { interpolateArray } from "@daeinc/array";
+import { interpolate } from "@daeinc/geom";
 
 export type Frame = {
   time: number;
@@ -6,12 +6,7 @@ export type Frame = {
   [key: string]: any;
 };
 
-export type Interpolator = (
-  a: Frame,
-  b: Frame,
-  t: number,
-  out?: any[]
-) => Frame;
+export type Interpolator = (a: Frame, b: Frame, t: number, out?: any[]) => any;
 
 const setArray = (out: number[], ...values: number[]) => {
   for (let i = 0; i < values.length; i++) {
@@ -83,12 +78,7 @@ export default class Keyframes {
       return interpolator(startFrame, endFrame, t, out);
 
     //Otherwise we assume the values are simple numbers and lerp them
-    return interpolateArray(
-      startFrame.value as number[],
-      endFrame.value as number[],
-      t,
-      out
-    );
+    return interpolate(startFrame.value, endFrame.value, t, out);
   }
 
   interpolation(time: number) {
