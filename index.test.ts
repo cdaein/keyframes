@@ -1,10 +1,8 @@
 import { test, describe, expect } from "vitest";
 import Keyframes from "./index";
 
-// TODO: update rest of the tests
-
 describe("simple", () => {
-  var keys = [
+  const keys = [
     { time: 0, value: [0, 0] },
     { time: 1, value: [10, 5] },
   ];
@@ -21,22 +19,6 @@ describe("simple", () => {
     expect(newArray).toStrictEqual([5, 2.5]);
   });
 
-  // timeline.value(
-  //   0.5,
-  //   function (start, end, time, out) {
-  //     out[0] = 50;
-  //     out[1] = 25;
-  //     // t.deepEqual(start, keys[0], "gets first");
-  //     // t.deepEqual(end, keys[1], "gets last");
-  //     // t.equal(time, 0.5, "gets time");
-  //   },
-  //   array
-  // );
-
-  // test("gets custom interpolation", () => {
-  //   expect(array).toStrictEqual([50, 25]);
-  // });
-
   test("first keyframe", () => {
     expect(timeline.value(-1)).toStrictEqual([0, 0]);
   });
@@ -46,7 +28,38 @@ describe("simple", () => {
   });
 });
 
-test("timeline controls", () => {
+describe("custom interpolation", () => {
+  const keys = [
+    { time: 0, value: [0, 0] },
+    { time: 1, value: [10, 5] },
+  ];
+  const timeline = new Keyframes(keys);
+  const array = [0, 0];
+
+  timeline.value(
+    0.5,
+    (start, end, time, out) => {
+      out![0] = 50;
+      out![1] = 25;
+      test("gets first", () => {
+        expect(start).toStrictEqual(keys[0]);
+      });
+      test("gets last", () => {
+        expect(end).toStrictEqual(keys[1]);
+      });
+      test("gets time", () => {
+        expect(time).toEqual(0.5);
+      });
+    },
+    array
+  );
+
+  test("gets custom interpolation", () => {
+    expect(array).toStrictEqual([50, 25]);
+  });
+});
+
+describe("timeline controls", () => {
   const keys = [
     { time: 2, value: 1 },
     { time: 4, value: 2 },
@@ -106,6 +119,26 @@ test("timeline controls", () => {
     expect(c1.value(5)).toEqual(2);
   });
 
+  test("previous and next out of bounds", () => {
+    const two = new Keyframes([{ time: 0, value: 50 }]);
+    expect(two.previous(100)).toStrictEqual(two.frames[0]);
+    expect(two.next(100)).toStrictEqual(null);
+  });
+});
+
+describe("splice", () => {
+  const keys = [
+    { time: 2, value: 1 },
+    { time: 4, value: 2 },
+    { time: 0, value: 3 },
+  ];
+  const sorted = [
+    { time: 0, value: 3 },
+    { time: 2, value: 1 },
+    { time: 4, value: 2 },
+  ];
+
+  const c1 = new Keyframes(keys);
   const idx = c1.nearestIndex(4);
   c1.splice(idx, 1);
   sorted.splice(idx, 1);
@@ -113,6 +146,21 @@ test("timeline controls", () => {
   test("splice works", () => {
     expect(c1.frames).toStrictEqual(sorted);
   });
+});
+
+describe("splice 2", () => {
+  const keys = [
+    { time: 2, value: 1 },
+    { time: 4, value: 2 },
+    { time: 0, value: 3 },
+  ];
+  const sorted = [
+    { time: 0, value: 3 },
+    { time: 2, value: 1 },
+    { time: 4, value: 2 },
+  ];
+
+  const c1 = new Keyframes(keys);
 
   const newItem = { time: 10, value: 1 };
   c1.splice(0, 0, newItem);
@@ -120,12 +168,5 @@ test("timeline controls", () => {
 
   test("splice insert re-sorts array", () => {
     expect(c1.frames).not.toStrictEqual(sorted);
-  });
-
-  const two = new Keyframes([{ time: 0, value: 50 }]);
-
-  test("", () => {
-    expect(two.previous(100)).toStrictEqual(two.frames[0]);
-    expect(two.next(100)).toStrictEqual(null);
   });
 });

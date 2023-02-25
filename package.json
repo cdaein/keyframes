@@ -18,13 +18,13 @@
     "keyframes",
     "TypeScript"
   ],
+  "dependencies": {
+    "@daeinc/geom": "^0.10.0"
+  },
   "devDependencies": {
     "tsup": "^6.6.3",
     "typescript": "^4.9.5",
-    "vitest": "^0.28.5"
-  },
-  "dependencies": {
-    "@daeinc/array": "^0.6.1"
+    "vitest": "^0.29.1"
   },
   "repository": {
     "type": "git",
