@@ -1,11 +1,17 @@
 import { interpolateArray } from "@daeinc/array";
 
-type Frame = {
+export type Frame = {
   time: number;
-  value: number | number[];
+  value: unknown | unknown[]; // REVIEW: any or unknown?
+  [key: string]: any;
 };
 
-type Interpolator = (a: Frame, b: Frame, t: number, out?: any[]) => Frame;
+export type Interpolator = (
+  a: Frame,
+  b: Frame,
+  t: number,
+  out?: any[]
+) => Frame;
 
 const setArray = (out: number[], ...values: number[]) => {
   for (let i = 0; i < values.length; i++) {
