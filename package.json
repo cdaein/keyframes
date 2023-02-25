@@ -1,0 +1,34 @@
+{
+  "name": "@daeinc/keyframes",
+  "version": "0.0.1",
+  "description": "Keyframes ported to TypeScript",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --noemit && tsup",
+    "test": "vitest"
+  },
+  "author": "Daeinc",
+  "license": "MIT",
+  "keywords": [
+    "keyframes",
+    "TypeScript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdaein/keyframes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cdaein/keyframes/issues"
+  },
+  "homepage": "https://github.com/cdaein/keyframes#readme",
+  "devDependencies": {
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.5"
+  },
+  "dependencies": {
+    "@daeinc/array": "^0.6.1"
+  }
+}
