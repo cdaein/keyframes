@@ -2,7 +2,7 @@ import { interpolateArray } from "@daeinc/array";
 
 export type Frame = {
   time: number;
-  value: unknown | unknown[]; // REVIEW: any or unknown?
+  value: any | any[]; // REVIEW: any or unknown?
   [key: string]: any;
 };
 
