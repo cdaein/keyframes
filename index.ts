@@ -6,6 +6,9 @@ export type Frame = {
   [key: string]: any;
 };
 
+/**
+ * Custom interpolator function.
+ */
 export type Interpolator = (a: Frame, b: Frame, t: number, out?: any[]) => any;
 
 const setArray = (out: number[], ...values: number[]) => {
@@ -15,6 +18,12 @@ const setArray = (out: number[], ...values: number[]) => {
   return out;
 };
 
+/**
+ * Sort by comparing `Frame.time`.
+ * @param a -
+ * @param b -
+ * @returns
+ */
 const sort = (a: Frame, b: Frame) => {
   return a.time - b.time;
 };
@@ -26,7 +35,7 @@ export default class Keyframes {
 
   /**
    * @param frames - Array of `Frame` objects to initialize with.
-   * @param sorted -
+   * @param sorted - Sort frames by time.
    */
   constructor(frames?: Frame[], sorted?: boolean) {
     if (!(this instanceof Keyframes)) return new Keyframes(frames, sorted);
@@ -36,10 +45,10 @@ export default class Keyframes {
 
   /**
    * Finds the index of the nearest keyframe to the given time stamp.
-   * If radius is specified, it will return the nearest only within that radius
+   * If `radius` is specified, it will return the nearest only within that radius
    *
    * @param time -
-   * @param radius -
+   * @param radius - Time radius to search
    * @returns
    */
   nearestIndex(time: number, radius?: number) {
@@ -59,7 +68,7 @@ export default class Keyframes {
   /**
    * Gets the keyframe at the index
    * @param time -
-   * @param radius -
+   * @param radius - Time radius to search
    * @returns
    */
   nearest(time: number, radius?: number) {
@@ -68,7 +77,7 @@ export default class Keyframes {
   }
 
   /**
-   * Gets the keyframe at time
+   * Gets the keyframe at `time`.
    * @param time -
    * @returns
    */
@@ -77,7 +86,7 @@ export default class Keyframes {
   }
 
   /**
-   * Gets the keyframe index at time
+   * Gets the keyframe index at `time`
    * @param time -
    * @returns
    */
@@ -85,11 +94,13 @@ export default class Keyframes {
     return this.nearestIndex(time, 0);
   }
 
+  // TODO: use generic type for out and return
+
   /**
    * Lerps the value at the specified time stamp.
    * Returns `null` if no keyframes exist
    * @param time -
-   * @param interpolator -
+   * @param interpolator - A custom interpolator function.
    * @param out -
    * @returns
    */
@@ -101,8 +112,8 @@ export default class Keyframes {
     const endFrame = this.frames[v[1]];
     const t = v[2];
 
-    //We interpolator from left keyframe to right, with a custom easing
-    //equation if specified
+    // We interpolator from left keyframe to right,
+    // with a custom easing equation if specified
     if (typeof interpolator === "function")
       return interpolator(startFrame, endFrame, t, out);
 
@@ -189,7 +200,7 @@ export default class Keyframes {
   }
 
   /**
-   * Sorts the keyframes. you should do this after adding new keyframes that are not in linear time.
+   * Sorts the keyframes. You should do this after adding new keyframes that are not in linear time.
    */
   sort() {
     this.frames.sort(sort);
